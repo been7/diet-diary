@@ -13,11 +13,7 @@ const Header = () => {
   };
   return (
     <StyledHeader>
-      <StyledLogo
-        src="https://spartacodingclub.kr/_next/image?url=%2Fv5%2Ficons%2Flogo-active.png&w=1080&q=100"
-        alt="Logo"
-        onClick={handleLogoClick}
-      />
+      <StyledLogo src="/fork.png" alt="Logo" onClick={handleLogoClick} />
       <StyledWriteButton onClick={handleWriteButtonClick}>
         일기쓰기
       </StyledWriteButton>
@@ -32,17 +28,17 @@ const StyledHeader = styled.header`
   justify-content: space-between;
   align-items: center;
   padding: 20px;
-  background-color: #3d5a80;
+  background-color: #886297;
 `;
 
 const StyledLogo = styled.img`
   cursor: pointer;
-  width: 100px;
+  width: 30px;
 `;
 
 const StyledWriteButton = styled.button`
   padding: 10px 20px;
-  background-color: #98c1d9;
+  background-color: #d998d6;
   color: #fff;
   border: none;
   border-radius: 5px;

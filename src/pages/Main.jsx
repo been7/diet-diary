@@ -1,9 +1,21 @@
 import React from "react";
+import { useQuery } from "react-query";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { getDiaries } from "../api/diaries";
 
 const Main = () => {
   const navigate = useNavigate();
+
+  const { isLoading, isError, data } = useQuery("diaries", getDiaries);
+
+  if (isLoading) {
+    return <h1>로딩중...</h1>;
+  }
+
+  if (isError) {
+    return <h1>오류 발생!</h1>;
+  }
 
   const handleDiaryItemClick = (id) => {
     navigate(`/detail/${id}`);
@@ -11,10 +23,13 @@ const Main = () => {
 
   return (
     <StyledMain>
-      {[...Array(10)].map((_, index) => (
-        <StyledDiaryBox key={index} onClick={handleDiaryItemClick}>
-          <StyledTitle>Diary {index + 1}</StyledTitle>
-          <StyledDate>July 7, 2023</StyledDate>
+      {data.data.map((item, index) => (
+        <StyledDiaryBox
+          key={index}
+          onClick={() => handleDiaryItemClick(item.id)}
+        >
+          <StyledTitle>{item.title}</StyledTitle>
+          <StyledDate>March 27, 2024</StyledDate>
         </StyledDiaryBox>
       ))}
     </StyledMain>
@@ -33,7 +48,7 @@ const StyledMain = styled.main`
 
 const StyledDiaryBox = styled.div`
   padding: 20px;
-  background-color: #dbe9f6;
+  background-color: #eedcf1;
   border-radius: 5px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   transition: box-shadow 0.3s ease;
