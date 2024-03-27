@@ -1,5 +1,36 @@
 import React from "react";
 import styled from "styled-components";
+
+const Write = () => {
+  return (
+    <StyledMain>
+      <StyledTitle>Write Diary</StyledTitle>
+      <StyledDate>July 7, 2023</StyledDate>
+
+      <StyledMoodLabel htmlFor="moodSelect">Mood:</StyledMoodLabel>
+      <StyledMoodSelect id="moodSelect">
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+      </StyledMoodSelect>
+
+      <StyledContentLabel htmlFor="contentTextarea">
+        Content:
+      </StyledContentLabel>
+      <StyledContentTextarea id="contentTextarea" />
+
+      <StyledPasswordLabel htmlFor="passwordInput">
+        Password:
+      </StyledPasswordLabel>
+      <StyledPasswordInput type="password" id="passwordInput" />
+    </StyledMain>
+  );
+};
+
+export default Write;
+
 const StyledMain = styled.main`
   flex: 1;
   padding: 20px;
@@ -54,33 +85,3 @@ const StyledPasswordInput = styled.input`
   padding: 10px;
   font-size: 16px;
 `;
-
-const Write = () => {
-  return (
-    <StyledMain>
-      <StyledTitle>Write Diary</StyledTitle>
-      <StyledDate>July 7, 2023</StyledDate>
-
-      <StyledMoodLabel htmlFor="moodSelect">Mood:</StyledMoodLabel>
-      <StyledMoodSelect id="moodSelect">
-        <option value="1">1</option>
-        <option value="2">2</option>
-        <option value="3">3</option>
-        <option value="4">4</option>
-        <option value="5">5</option>
-      </StyledMoodSelect>
-
-      <StyledContentLabel htmlFor="contentTextarea">
-        Content:
-      </StyledContentLabel>
-      <StyledContentTextarea id="contentTextarea" />
-
-      <StyledPasswordLabel htmlFor="passwordInput">
-        Password:
-      </StyledPasswordLabel>
-      <StyledPasswordInput type="password" id="passwordInput" />
-    </StyledMain>
-  );
-};
-
-export default Write;
