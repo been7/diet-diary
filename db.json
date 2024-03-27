@@ -1,0 +1,31 @@
+{
+  "diary": [
+    {
+      "id": 1,
+      "title": "Test Diary Title1",
+      "body": "Test Diary body1",
+      "isDeleted": false,
+      "moodCode": 1,
+      "createdAt": "2024-03-27T12:00:00Z",
+      "password": "1234"
+    },
+    {
+      "id": "0993",
+      "moodCode": 1,
+      "title": "ㅎ",
+      "body": "ㅎ",
+      "password": "g",
+      "isDeleted": false,
+      "createAt": "Wed Mar 27 2024 23:31:48 GMT+0900 (한국 표준시)"
+    },
+    {
+      "id": "450d",
+      "moodCode": "3",
+      "title": "a",
+      "body": "a",
+      "password": "a",
+      "isDeleted": false,
+      "createAt": "Wed Mar 27 2024 23:32:00 GMT+0900 (한국 표준시)"
+    }
+  ]
+}

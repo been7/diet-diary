@@ -3,7 +3,13 @@ import { styled } from "styled-components";
 const Footer = () => {
   return (
     <StyledFooter>
-      <StyledCompanyInfo>Company Information</StyledCompanyInfo>
+      <StyledCompanyInfo>
+        {" "}
+        icons by{" "}
+        <a href="https://icons8.com/" target="_blank" rel="noopener noreferrer">
+          icons8
+        </a>
+      </StyledCompanyInfo>
     </StyledFooter>
   );
 };
@@ -12,7 +18,7 @@ export default Footer;
 
 const StyledFooter = styled.footer`
   padding: 20px;
-  background-color: #3d5a80;
+  background-color: #9458ac;
   text-align: center;
 `;
 
