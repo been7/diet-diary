@@ -1,26 +1,31 @@
 import React, { useState } from "react";
-import { useMutation, useQueryClient } from "react-query";
-import { useNavigate } from "react-router-dom";
+import { useMutation, useQuery, useQueryClient } from "react-query";
+import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
-import { addDiaries } from "../api/diaries";
+import { fixDiaries, getDiaries } from "../api/diaries";
 
-const Write = () => {
-  const [mood, setMood] = useState(1);
-  const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
+const Fix = () => {
+  const { data } = useQuery("diaries", getDiaries);
+  const params = useParams();
+  const queryClient = useQueryClient();
+  const filteredDiary = data.data.find((item) => {
+    return item.id == params.id;
+  });
+
+  const [mood, setMood] = useState(1); // 안불러와짐..
+  const [title, setTitle] = useState(filteredDiary.title);
+  const [content, setContent] = useState(filteredDiary.body);
   const [password, setPassword] = useState("");
 
   const navigate = useNavigate();
 
-  const queryClient = useQueryClient();
-
-  const diaryMutation = useMutation(addDiaries, {
+  const diaryMutation = useMutation(fixDiaries, {
     onSuccess: () => {
       queryClient.invalidateQueries("diaries");
     },
   });
 
-  const handleWriteButtonClick = (e) => {
+  const handleFixButtonClick = (e) => {
     e.preventDefault();
 
     if (!title || !content || !password) {
@@ -33,6 +38,7 @@ const Write = () => {
     }
 
     diaryMutation.mutate({
+      id: filteredDiary.id,
       moodCode: mood,
       title,
       body: content,
@@ -65,7 +71,7 @@ const Write = () => {
     <StyledMain>
       <StyledTitle>Write Diary</StyledTitle>
       <StyledDate>July 7, 2023</StyledDate>
-      <form onSubmit={handleWriteButtonClick}>
+      <form onSubmit={handleFixButtonClick}>
         <StyledMoodLabel htmlFor="moodSelect">Mood:</StyledMoodLabel>
         <StyledMoodSelect id="moodSelect" onChange={handleMoodChange}>
           <option value="1">1</option>
@@ -94,13 +100,13 @@ const Write = () => {
           value={password}
           onChange={handlePasswordChange}
         />
-        <button>제출</button>
+        <button>수정</button>
       </form>
     </StyledMain>
   );
 };
 
-export default Write;
+export default Fix;
 
 const StyledMain = styled.main`
   flex: 1;
