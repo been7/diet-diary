@@ -1,16 +1,33 @@
 import React from "react";
-import { useQuery } from "react-query";
-import { useParams } from "react-router-dom";
+import { useMutation, useQuery, useQueryClient } from "react-query";
+import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
-import { getDiaries } from "../api/diaries";
+import { delDiaries, getDiaries } from "../api/diaries";
 
 const Detail = () => {
   const params = useParams();
-  const id = params.id;
+  const queryClient = useQueryClient();
+  const navigate = useNavigate();
+
+  // 삭제
+  const { mutate: delMutate } = useMutation(delDiaries, {
+    onSuccess: async () => {
+      await queryClient.invalidateQueries(["diaries"]);
+      navigate("/");
+    },
+  });
 
   const { data } = useQuery("diaries", getDiaries);
 
-  const diary = data.data.find((item) => item.id == id);
+  const diary = data.data.find((item) => item.id == params.id);
+
+  const handleDeleteButton = () => {
+    delMutate(params.id);
+  };
+
+  const handleFixButton = () => {
+    navigate(`/fix/${params.id}`);
+  };
 
   return (
     <StyledMain>
@@ -18,6 +35,8 @@ const Detail = () => {
       <StyledDate>{diary.createdAt}</StyledDate>
       <StyledMood>Mood: {diary.moodCode}</StyledMood>
       <StyledContent>{diary.body}</StyledContent>
+      <button onClick={handleFixButton}>수정</button>
+      <button onClick={handleDeleteButton}>삭제</button>
     </StyledMain>
   );
 };
