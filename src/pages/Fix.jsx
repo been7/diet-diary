@@ -1,37 +1,40 @@
 import React, { useState } from "react";
-import { useMutation, useQueryClient } from "react-query";
-import { useNavigate } from "react-router-dom";
-import { addDiaries } from "../api/diaries";
+import { useMutation, useQuery, useQueryClient } from "react-query";
+import { useNavigate, useParams } from "react-router-dom";
+import { fixDiaries, getDiaries } from "../api/diaries";
 
-function formatDate(date) {
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, "0");
-  const day = String(date.getDate()).padStart(2, "0");
+const Fix = () => {
+  const { data } = useQuery("diaries", getDiaries);
+  const params = useParams();
+  const queryClient = useQueryClient();
+  const navigate = useNavigate();
+  const filteredDiary = data.data.find((item) => {
+    return item.id == params.id;
+  });
 
-  return `${year}.${month}.${day}`;
-}
-
-const currentDate = new Date();
-const formattedDate = formatDate(currentDate);
-
-const Write = () => {
-  const [mood, setMood] = useState(1);
-  const [writer, setWriter] = useState("");
-  const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
+  const [mood, setMood] = useState(filteredDiary.moodCode);
+  const [writer, setWriter] = useState(filteredDiary.writer);
+  const [title, setTitle] = useState(filteredDiary.title);
+  const [content, setContent] = useState(filteredDiary.body);
   const [password, setPassword] = useState("");
 
-  const navigate = useNavigate();
+  const currentDate = new Date();
+  const year = currentDate.getFullYear();
+  const month = currentDate.getMonth() + 1;
+  const day = currentDate.getDate();
+  const dayOfWeek = currentDate.toLocaleDateString("ko-KR", {
+    weekday: "long",
+  });
 
-  const queryClient = useQueryClient();
+  const nowDate = `${year}년 ${month}월 ${day}일 ${dayOfWeek}`;
 
-  const diaryMutation = useMutation(addDiaries, {
+  const diaryMutation = useMutation(fixDiaries, {
     onSuccess: () => {
       queryClient.invalidateQueries("diaries");
     },
   });
 
-  const handleWriteButtonClick = (e) => {
+  const handleFixButtonClick = (e) => {
     e.preventDefault();
 
     if (!writer || !title || !content || !password) {
@@ -44,14 +47,14 @@ const Write = () => {
     }
 
     diaryMutation.mutate({
+      id: filteredDiary.id,
       moodCode: mood,
-      formattedDate,
       writer,
       title,
       body: content,
       password,
       isDeleted: false,
-      createAt: currentDate,
+      createAt: new Date().toString(),
     });
 
     // 메인으로 이동
@@ -79,13 +82,13 @@ const Write = () => {
   };
 
   return (
-    <main className="mt-32 mx-auto w-full max-w-screen-lg min-w-[360px] px-3">
-      {/* <div className="flex flex-col justify-center"> */}
+    <main className="mt-32 mx-auto w-[1000px] px-3">
       <h2 className="text-2xl text-gray-800 mt-0 mb-3 text-center">
-        Record your diet
+        Fix Diary
       </h2>
       <div className="w-full h-1 mb-10 bg-gradient-to-r from-[#364528] from-5% via-[#D0DBB4] to-[#FEF0C9]"></div>
-      <form onSubmit={handleWriteButtonClick}>
+      <form onSubmit={handleFixButtonClick}>
+        {" "}
         <div className="flex gap-3 mb-5">
           <div className="flex-1">
             <div>
@@ -160,9 +163,8 @@ const Write = () => {
           </button>
         </div>
       </form>
-      {/* </div> */}
     </main>
   );
 };
 
-export default Write;
+export default Fix;

@@ -1,0 +1,59 @@
+{
+  "diary": [
+    {
+      "id": "18cf",
+      "moodCode": "2",
+      "formattedDate": "2024.04.05",
+      "writer": "asd234",
+      "title": "asdf",
+      "body": "asdf",
+      "password": "123",
+      "isDeleted": false,
+      "createAt": "2024-04-06T11:37:55.574Z"
+    },
+    {
+      "id": "fa30",
+      "moodCode": "5",
+      "formattedDate": "2024.04.06",
+      "writer": "오잉",
+      "title": "오잉",
+      "body": "오잉123",
+      "password": "123",
+      "isDeleted": false,
+      "createAt": "Sat Apr 06 2024 23:14:12 GMT+0900 (한국 표준시)"
+    },
+    {
+      "id": "7ab4",
+      "moodCode": 1,
+      "formattedDate": "2024.04.06",
+      "writer": "jiyoung",
+      "title": "햄벅한 토요일",
+      "body": "햄버거 두~~개나 먹었다\n콘샐러드랑~\n그래도 다이어트 콜라 먹어서 마음이 덜 불편하다\n맛있는거 먹어서 햄벅한날 :)",
+      "password": "0406",
+      "isDeleted": false,
+      "createAt": "2024-04-06T13:32:05.756Z"
+    },
+    {
+      "id": "6a0d",
+      "moodCode": "2",
+      "formattedDate": "2024.04.07",
+      "writer": "1",
+      "title": "1",
+      "body": "1",
+      "password": "123",
+      "isDeleted": false,
+      "createAt": "2024-04-07T02:43:09.552Z"
+    },
+    {
+      "id": "0aa7",
+      "moodCode": "3",
+      "formattedDate": "2024.04.07",
+      "writer": "먹보",
+      "title": "참치김밥 최고",
+      "body": "참치김밥 너무너무 맛있어!",
+      "password": "123",
+      "isDeleted": false,
+      "createAt": "2024-04-07T03:45:43.346Z"
+    }
+  ]
+}

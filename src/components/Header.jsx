@@ -1,7 +1,7 @@
-import { useNavigate } from "react-router-dom";
-import styled from "styled-components";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const Header = () => {
+  const location = useLocation();
   const navigate = useNavigate();
 
   const handleLogoClick = () => {
@@ -12,45 +12,27 @@ const Header = () => {
     navigate("/write");
   };
   return (
-    <StyledHeader>
-      <StyledLogo
-        src="https://spartacodingclub.kr/_next/image?url=%2Fv5%2Ficons%2Flogo-active.png&w=1080&q=100"
-        alt="Logo"
-        onClick={handleLogoClick}
-      />
-      <StyledWriteButton onClick={handleWriteButtonClick}>
-        일기쓰기
-      </StyledWriteButton>
-    </StyledHeader>
+    <div
+      className={`fixed t-0 l-0 w-full h-16 flex justify-center items-center backdrop-blur z-10 ${
+        location.pathname === "/" ? "" : "shadow-xl"
+      }`}
+    >
+      <div className="flex justify-between w-full max-w-screen-lg min-w-[360px] px-3">
+        <h1
+          onClick={handleLogoClick}
+          className="text-2xl text-black font-merriweather tracking-tight hover:cursor-pointer"
+        >
+          Yummy Diary
+        </h1>
+        <button
+          onClick={handleWriteButtonClick}
+          className="text-sm w-[70px] rounded-sm text-black border border-black"
+        >
+          Record
+        </button>
+      </div>
+    </div>
   );
 };
 
 export default Header;
-
-const StyledHeader = styled.header`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 20px;
-  background-color: #3d5a80;
-`;
-
-const StyledLogo = styled.img`
-  cursor: pointer;
-  width: 100px;
-`;
-
-const StyledWriteButton = styled.button`
-  padding: 10px 20px;
-  background-color: #98c1d9;
-  color: #fff;
-  border: none;
-  border-radius: 5px;
-  font-family: inherit;
-  font-size: 14px;
-  cursor: pointer;
-
-  &:hover {
-    background-color: #81a4c2;
-  }
-`;
