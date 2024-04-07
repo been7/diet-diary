@@ -1,8 +1,8 @@
 import React from "react";
 import { useQuery } from "react-query";
 import { useNavigate } from "react-router-dom";
-import styled from "styled-components";
 import { getDiaries } from "../api/diaries";
+import HeroMain from "../components/HeroMain";
 
 const Main = () => {
   const navigate = useNavigate();
@@ -22,52 +22,35 @@ const Main = () => {
   };
 
   return (
-    <StyledMain>
-      {data.data.map((item, index) => (
-        <StyledDiaryBox
-          key={index}
-          onClick={() => handleDiaryItemClick(item.id)}
-        >
-          <StyledTitle>{item.title}</StyledTitle>
-          <StyledDate>March 27, 2024</StyledDate>
-        </StyledDiaryBox>
-      ))}
-    </StyledMain>
+    <>
+      <HeroMain />
+      <main className="w-full px-3 max-w-screen-lg min-w-[360px] mx-auto pt-10 sm:pt-16 mt-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-5 items-center">
+          {data.data.reverse().map((item, index) => (
+            <>
+              <div
+                className="font-merriweather w-full h-32 rounded-md bg-gradient-to-br from-[#364528] via-[#D0DBB4] to-[#FEF0C9] p-0.5 text-black hover:cursor-pointer"
+                key={index}
+                onClick={() => handleDiaryItemClick(item.id)}
+              >
+                {" "}
+                <div className="h-full p-3 rounded-md bg-white">
+                  <div className="h-[70%] flex items-center justify-center whitespace-nowrap">
+                    <h2 className="text-xl text-ellipsis overflow-hidden">
+                      {item.title}
+                    </h2>
+                  </div>
+                  <p className="mt-3 text-sm text-end text-gray-500">
+                    {item.formattedDate}
+                  </p>
+                </div>
+              </div>
+            </>
+          ))}
+        </div>
+      </main>
+    </>
   );
 };
 
 export default Main;
-
-const StyledMain = styled.main`
-  flex: 1;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 0.5fr));
-  grid-gap: 20px;
-  padding: 20px;
-`;
-
-const StyledDiaryBox = styled.div`
-  padding: 20px;
-  background-color: #eedcf1;
-  border-radius: 5px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  transition: box-shadow 0.3s ease;
-  cursor: pointer;
-
-  &:hover {
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  }
-`;
-
-const StyledTitle = styled.h2`
-  margin-top: 0;
-  font-size: 18px;
-  font-weight: bold;
-  color: #293241;
-`;
-
-const StyledDate = styled.p`
-  color: #888;
-  font-size: 14px;
-  margin-top: 5px;
-`;

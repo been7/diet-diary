@@ -1,23 +1,32 @@
 import React, { useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useNavigate, useParams } from "react-router-dom";
-import styled from "styled-components";
 import { fixDiaries, getDiaries } from "../api/diaries";
 
 const Fix = () => {
   const { data } = useQuery("diaries", getDiaries);
   const params = useParams();
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
   const filteredDiary = data.data.find((item) => {
     return item.id == params.id;
   });
 
-  const [mood, setMood] = useState(1); // 안불러와짐..
+  const [mood, setMood] = useState(filteredDiary.moodCode);
+  const [writer, setWriter] = useState(filteredDiary.writer);
   const [title, setTitle] = useState(filteredDiary.title);
   const [content, setContent] = useState(filteredDiary.body);
   const [password, setPassword] = useState("");
 
-  const navigate = useNavigate();
+  const currentDate = new Date();
+  const year = currentDate.getFullYear();
+  const month = currentDate.getMonth() + 1;
+  const day = currentDate.getDate();
+  const dayOfWeek = currentDate.toLocaleDateString("ko-KR", {
+    weekday: "long",
+  });
+
+  const nowDate = `${year}년 ${month}월 ${day}일 ${dayOfWeek}`;
 
   const diaryMutation = useMutation(fixDiaries, {
     onSuccess: () => {
@@ -28,7 +37,7 @@ const Fix = () => {
   const handleFixButtonClick = (e) => {
     e.preventDefault();
 
-    if (!title || !content || !password) {
+    if (!writer || !title || !content || !password) {
       alert("필수 입력값을 확인하세요.");
       return false;
     }
@@ -40,6 +49,7 @@ const Fix = () => {
     diaryMutation.mutate({
       id: filteredDiary.id,
       moodCode: mood,
+      writer,
       title,
       body: content,
       password,
@@ -55,6 +65,10 @@ const Fix = () => {
     setMood(e.target.value);
   };
 
+  const handleWriterChange = (e) => {
+    setWriter(e.target.value);
+  };
+
   const handleTitleChange = (e) => {
     setTitle(e.target.value);
   };
@@ -68,111 +82,89 @@ const Fix = () => {
   };
 
   return (
-    <StyledMain>
-      <StyledTitle>Write Diary</StyledTitle>
-      <StyledDate>July 7, 2023</StyledDate>
+    <main className="mt-32 mx-auto w-[1000px] px-3">
+      <h2 className="text-2xl text-gray-800 mt-0 mb-3 text-center">
+        Fix Diary
+      </h2>
+      <div className="w-full h-1 mb-10 bg-gradient-to-r from-[#364528] from-5% via-[#D0DBB4] to-[#FEF0C9]"></div>
       <form onSubmit={handleFixButtonClick}>
-        <StyledMoodLabel htmlFor="moodSelect">Mood:</StyledMoodLabel>
-        <StyledMoodSelect id="moodSelect" onChange={handleMoodChange}>
-          <option value="1">1</option>
-          <option value="2">2</option>
-          <option value="3">3</option>
-          <option value="4">4</option>
-          <option value="5">5</option>
-        </StyledMoodSelect>
-        <StyledTitleLabel htmlFor="titleTextInput">Title</StyledTitleLabel>
-        <StyledTitleInput value={title} onChange={handleTitleChange} />
-        <StyledContentLabel htmlFor="contentTextarea">
-          Content
-        </StyledContentLabel>
-        <StyledContentTextarea
-          id="contentTextarea"
-          value={content}
-          onChange={handleContentChange}
-        />
-
-        <StyledPasswordLabel htmlFor="passwordInput">
-          Password:
-        </StyledPasswordLabel>
-        <StyledPasswordInput
-          type="password"
-          id="passwordInput"
-          value={password}
-          onChange={handlePasswordChange}
-        />
-        <button>수정</button>
+        {" "}
+        <div className="flex gap-3 mb-5">
+          <div className="flex-1">
+            <div>
+              <label className="block text-gray-800 text-lg">Writer</label>
+            </div>
+            <div>
+              <input
+                value={writer}
+                onChange={handleWriterChange}
+                className="w-full h-16 px-4 py-2 border border-gray-300 rounded-md text-gray-800 text-lg mt-1"
+              />
+            </div>
+          </div>
+          <div>
+            <div>
+              <label className="block text-gray-800 text-lg">Mood</label>
+            </div>
+            <div>
+              <select
+                onChange={handleMoodChange}
+                className="h-16 px-4 py-2 border border-gray-300 rounded-md text-gray-800 text-lg mt-1 focus:outline-none "
+              >
+                <option value="1">😄</option>
+                <option value="2">😭</option>
+                <option value="3">🥰</option>
+                <option value="4">😷</option>
+                <option value="5">😡</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div className="mb-5">
+          <div>
+            <label className="block text-gray-800 text-lg">Title</label>
+          </div>
+          <div>
+            <input
+              value={title}
+              onChange={handleTitleChange}
+              className="w-full h-16 px-4 py-2 border border-gray-300 rounded-md text-gray-800 text-lg mt-1"
+            />
+          </div>
+        </div>
+        <div className="mb-5">
+          <div>
+            <label className="block text-gray-800 text-lg">Content</label>
+          </div>
+          <div>
+            <textarea
+              value={content}
+              onChange={handleContentChange}
+              className="w-full h-48 px-4 py-2 border border-gray-300 rounded-md text-gray-800 text-lg mt-1"
+            />
+          </div>
+        </div>
+        <div className="mb-5">
+          <div>
+            <label className="block text-gray-800 text-lg">Password</label>
+          </div>
+          <div>
+            <input
+              type="password"
+              value={password}
+              onChange={handlePasswordChange}
+              className="w-full px-4 py-2 border border-gray-300 rounded-md text-gray-800 text-lg mt-1"
+            />
+          </div>
+        </div>
+        <div className="flex justify-end">
+          <button className="px-6 py-2 text-white text-md mt-5 bg-green-900 rounded-sm font-semibold">
+            Submit
+          </button>
+        </div>
       </form>
-    </StyledMain>
+    </main>
   );
 };
 
 export default Fix;
-
-const StyledMain = styled.main`
-  flex: 1;
-  padding: 20px;
-`;
-
-const StyledTitle = styled.h2`
-  margin-top: 0;
-  font-size: 24px;
-  color: #293241;
-`;
-
-const StyledDate = styled.p`
-  color: #888;
-  font-size: 14px;
-  margin-top: 5px;
-`;
-
-const StyledMoodLabel = styled.label`
-  display: block;
-  margin-top: 20px;
-  font-size: 16px;
-  color: #293241;
-`;
-
-const StyledMoodSelect = styled.select`
-  padding: 10px;
-  font-size: 16px;
-`;
-
-const StyledContentLabel = styled.label`
-  display: block;
-  margin-top: 20px;
-  font-size: 16px;
-  color: #293241;
-`;
-
-const StyledContentTextarea = styled.textarea`
-  width: 100%;
-  height: 200px;
-  padding: 10px;
-  font-size: 16px;
-`;
-
-const StyledTitleLabel = styled.label`
-  display: block;
-  margin-top: 20px;
-  font-size: 16px;
-  color: #293241;
-`;
-
-const StyledTitleInput = styled.textarea`
-  width: 100%;
-  height: 20px;
-  padding: 10px;
-  font-size: 16px;
-`;
-
-const StyledPasswordLabel = styled.label`
-  display: block;
-  margin-top: 20px;
-  font-size: 16px;
-  color: #293241;
-`;
-
-const StyledPasswordInput = styled.input`
-  padding: 10px;
-  font-size: 16px;
-`;
