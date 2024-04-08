@@ -8,6 +8,7 @@ const Main = () => {
   const navigate = useNavigate();
 
   const { isLoading, isError, data } = useQuery("diaries", getDiaries);
+  console.log("data", data);
 
   if (isLoading) {
     return <h1>로딩중...</h1>;
