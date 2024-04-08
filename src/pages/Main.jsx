@@ -27,7 +27,7 @@ const Main = () => {
       <HeroMain />
       <main className="w-full px-3 max-w-screen-lg min-w-[360px] mx-auto pt-10 sm:pt-16 mt-3">
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-5 items-center">
-          {data.data.reverse().map((item, index) => (
+          {data?.data.reverse().map((item, index) => (
             <>
               <div
                 className="font-merriweather w-full h-32 rounded-md bg-gradient-to-br from-[#364528] via-[#D0DBB4] to-[#FEF0C9] p-0.5 text-black hover:cursor-pointer"
