@@ -54,6 +54,17 @@
       "password": "123",
       "isDeleted": false,
       "createAt": "2024-04-07T03:45:43.346Z"
+    },
+    {
+      "id": "d6e5",
+      "moodCode": "3",
+      "formattedDate": "2024.04.08",
+      "writer": "비니2",
+      "title": "샐러드파티2",
+      "body": "샐러드 우동 너무 맛있엉2",
+      "password": "123",
+      "isDeleted": false,
+      "createAt": "Mon Apr 08 2024 02:07:05 GMT+0900 (한국 표준시)"
     }
   ]
 }
